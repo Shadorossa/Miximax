@@ -34,7 +34,7 @@ const playersData = [
         imgBase: "img/player/3672_DesmodusDrakul.png",
         imgMiximax: "img/player/3933_DesmodusDrakul.png",
         hexOriginal: "36 89 E8 50 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 96 E9 19 98 D1 99 07 95 00 00 00 00 BA 5E 46 A9 00 00 00 00 8E F6 01",
-        hexModified: "7A 70 47 32 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 10 BD 2B 9D 57 CD 35 90 00 00 00 00 00 00 00 00 00 00 00 00 D6 14 02"
+        hexModified: "36 89 E8 50 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 10 BD 2B 9D 57 CD 35 90 00 00 00 00 00 00 00 00 00 00 00 00 D6 14 02"
     },
     {
         id: "wolfram",
@@ -43,7 +43,7 @@ const playersData = [
         imgBase: "img/player/3662_WolframVulpeen.png",
         imgMiximax: "img/player/3932_WolframVulpeen.png",
         hexOriginal: "26 8C 6C 83 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 43 5B 4F 69 04 2B 51 64 00 00 00 00 E5 08 25 89 00 00 00 00 12 F5 01",
-        hexModified: "BD E6 06 7D 00 00 00 00 00 00 00 00 00 00 00 00 E9 BA 0D 66 10 BD 2B 9D 57 CD 35 90 00 00 00 00 00 00 00 00 00 00 00 00 B0 14 02"
+        hexModified: "26 8C 6C 83 00 00 00 00 00 00 00 00 00 00 00 00 E9 BA 0D 66 10 BD 2B 9D 57 CD 35 90 00 00 00 00 00 00 00 00 00 00 00 00 B0 14 02"
     },
     {
         id: "arecks",
@@ -52,7 +52,7 @@ const playersData = [
         imgBase: "img/player/3583_ArEcks.png",
         imgMiximax: "img/player/3923_ArEcks.png",
         hexOriginal: "B7 6C 7F F0 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 F7 50 38 CF B0 20 26 C2 00 00 00 00 00 00 00 00 00 00 00 00 A4 E9 01",
-        hexModified: "59 DA 6D 84 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 10 BD 2B 9D 57 CD 35 90 00 00 00 00 00 00 00 00 00 00 00 00 34 13 02"
+        hexModified: "B7 6C 7F F0 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 10 BD 2B 9D 57 CD 35 90 00 00 00 00 00 00 00 00 00 00 00 00 34 13 02"
     },
     {
         id: "mercury",
@@ -61,6 +61,6 @@ const playersData = [
         imgBase: "img/player/1076_Mercury.png",
         imgMiximax: "img/player/1076_Mercury.png",
         hexOriginal: "EF D7 4F 38 00 00 00 00 00 00 00 00 00 00 00 00 6A 29 68 DF EE 59 FD C5 A9 29 E3 C8 00 00 00 00 CA 8C 03 A8 00 00 00 00 3E A0 00",
-        hexModified: "AA 60 77 8A 00 00 00 00 00 00 00 00 00 00 00 00 6A 29 68 DF 10 BD 2B 9D 57 CD 35 90 00 00 00 00 00 00 00 00 00 00 00 00 F4 35 03"
+        hexModified: "EF D7 4F 38 00 00 00 00 00 00 00 00 00 00 00 00 6A 29 68 DF 10 BD 2B 9D 57 CD 35 90 00 00 00 00 00 00 00 00 00 00 00 00 F4 35 03"
     }
 ];

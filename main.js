@@ -1,15 +1,48 @@
-const FILE_NAME = "chara_model_1.03.49.00.cfg";
+// --- CONFIGURACIÓN DINÁMICA ---
+const GITHUB_USER = "tu_usuario_de_github"; // <--- CAMBIA ESTO
+const GITHUB_REPO = "nombre_de_tu_repositorio"; // <--- CAMBIA ESTO
+let detectedFileName = "chara_model_1.03.49.00.cfg.bin"; // Nombre por defecto (fallback)
+
 const currentViewIndex = {};
 let selectedTeam = null;
+
+// 1. FUNCIÓN DE AUTO-DETECCIÓN
+async function autoDetectFile() {
+    try {
+        const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/`;
+        const res = await fetch(apiUrl);
+        if (!res.ok) throw new Error("No se pudo acceder a la API de GitHub");
+
+        const files = await res.json();
+        // Buscamos el archivo que empiece por chara_model y termine en .bin
+        const targetFile = files.find(f =>
+            f.name.toLowerCase().startsWith("chara_model") &&
+            f.name.toLowerCase().endsWith(".bin")
+        );
+
+        if (targetFile) {
+            detectedFileName = targetFile.name;
+            console.log("Sistema: Archivo detectado automáticamente ->", detectedFileName);
+            // Actualizamos el botón visualmente para dar confianza al usuario
+            const btn = document.querySelector('.btn-action.main');
+            if (btn) btn.title = `Usando: ${detectedFileName}`;
+        }
+    } catch (e) {
+        console.warn("Detección automática fallida, usando nombre por defecto.", e);
+    }
+}
 
 function forceCacheReload() {
     const cleanUrl = window.location.origin + window.location.pathname;
     window.location.href = cleanUrl + '?update=' + new Date().getTime();
 }
 
-document.addEventListener('DOMContentLoaded', () => { renderTeamSelection(); });
+document.addEventListener('DOMContentLoaded', () => {
+    autoDetectFile(); // Detectar el archivo al arrancar
+    renderTeamSelection();
+});
 
-// --- LÓGICA DE EQUIPOS ---
+// --- LÓGICA DE SELECCIÓN DE EQUIPOS ---
 function renderTeamSelection() {
     const grid = document.getElementById('team-grid');
     let teams = [...new Set(playersData.filter(p => !p.isSubOption).map(p => p.team))];
@@ -27,12 +60,13 @@ function selectTeam(teamName) {
     document.querySelectorAll('.team-box').forEach(b => b.classList.remove('selected'));
     const teamId = teamName.replace(/\s/g, '');
     if (document.getElementById(`box-${teamId}`)) document.getElementById(`box-${teamId}`).classList.add('selected');
+
     selectedTeam = teamName;
     document.getElementById('active-team-title').innerHTML = `EQUIPO: <span style="color: #fff">${teamName.toUpperCase()}</span>`;
     renderPlayerRow(teamName);
 }
 
-// --- LÓGICA JUGADORES CON INDICADOR ---
+// --- LÓGICA DE JUGADORES (ORDEN NUMÉRICO Y "2" ROJO) ---
 function getPlayerNumber(path) {
     const filename = path.split('/').pop();
     const match = filename.match(/^\d+/);
@@ -42,21 +76,23 @@ function getPlayerNumber(path) {
 function renderPlayerRow(teamName) {
     const row = document.getElementById('player-row');
     let filteredPlayers = playersData.filter(p => p.team === teamName && !p.isSubOption);
+
+    // Ordenar por número de imagen
     filteredPlayers.sort((a, b) => getPlayerNumber(a.imgBase) - getPlayerNumber(b.imgBase));
 
     row.innerHTML = filteredPlayers.map((player, index) => {
         const isChecked = localStorage.getItem(player.id) === 'true';
         currentViewIndex[player.id] = 0;
 
-        // DETECCIÓN: ¿Tienen la misma imagen base y miximax?
-        // Si es así, preparamos el indicador (oculto por ahora)
+        // Detector para el "2" rojo (Epsilon Kai)
         const hasIdenticalImages = (player.imgBase === player.imgMiximax) && player.imgMiximax;
         const indicatorHTML = hasIdenticalImages ? `<span class="indicator-modified" id="ind-${player.id}">2</span>` : '';
 
         return `
         <div class="player-card" id="card-${player.id}" style="animation-delay: ${index * 0.05}s">
             <div class="card-img-top" id="container-${player.id}">
-                ${indicatorHTML} <div class="img-nav" id="nav-${player.id}" style="display:none">
+                ${indicatorHTML}
+                <div class="img-nav" id="nav-${player.id}" style="display:none">
                     <button onclick="changeView('${player.id}', -1)">❮</button>
                     <button onclick="changeView('${player.id}', 1)">❯</button>
                 </div>
@@ -88,6 +124,7 @@ function renderPlayerRow(teamName) {
     filteredPlayers.forEach(p => updateVisuals(p.id, false, true));
 }
 
+// --- GESTIÓN VISUAL Y PRE-CARGA ---
 function getActiveImages(player) {
     let images = [];
     const checkMiximax = document.getElementById(player.id)?.checked;
@@ -111,16 +148,10 @@ function updateVisuals(mainId, save, isInitial = false) {
         currentViewIndex[mainId] = 0;
     }
 
-    // LÓGICA DEL INDICADOR "2" ROJO
-    // Buscamos si existe el indicador para este jugador
+    // Mostrar/Ocultar "2" rojo
     const indicator = document.getElementById(`ind-${mainId}`);
     if (indicator) {
-        // Solo lo mostramos si el switch principal (Miximax) está activado
-        if (mainSwitch.checked) {
-            indicator.classList.add('visible');
-        } else {
-            indicator.classList.remove('visible');
-        }
+        mainSwitch.checked ? indicator.classList.add('visible') : indicator.classList.remove('visible');
     }
 
     const activeImages = getActiveImages(player);
@@ -177,13 +208,16 @@ function changeView(id, dir) {
 
 function handleToggle(id) { updateVisuals(id, true, false); }
 
-// --- MOTOR HEXADECIMAL (Sin cambios) ---
+// --- PROCESAMIENTO HEXADECIMAL ---
 async function processAndDownload() {
     try {
-        const res = await fetch(FILE_NAME);
-        if (!res.ok) throw new Error("Archivo .bin no encontrado.");
+        console.log("Intentando descargar archivo:", detectedFileName);
+        const res = await fetch(detectedFileName);
+        if (!res.ok) throw new Error(`No se pudo cargar el archivo ${detectedFileName}. Asegúrate de que existe en el repositorio.`);
+
         const buffer = await res.arrayBuffer();
         let data = new Uint8Array(buffer);
+
         playersData.forEach(p => {
             const el = document.getElementById(p.id) || { checked: localStorage.getItem(p.id) === 'true' };
             const active = el.checked;
@@ -191,10 +225,14 @@ async function processAndDownload() {
             const rH = active ? p.hexModified : p.hexOriginal;
             if (sH && rH && !sH.includes("HEX_")) data = replaceByteSequence(data, sH, rH);
         });
+
         const blob = new Blob([data], { type: "application/octet-stream" });
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href = url; a.download = FILE_NAME; a.click();
-    } catch (e) { alert(e.message); }
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = detectedFileName;
+        a.click();
+    } catch (e) { alert("Error de archivo: " + e.message); }
 }
 
 function replaceByteSequence(data, sH, rH) {
