@@ -76,8 +76,8 @@ const playersData = [
         id: "gamma",
         name: "Gamma",
         team: "ProtocoloOmega3",
-        imgBase: "img/player/3913_Gamma.png",
-        imgMiximax: "img/player/3518_Gamma.png",
+        imgBase: "img/player/3518_Gamma.png",
+        imgMiximax: "img/player/3913_Gamma.png",
         hexOriginal: "9B B0 01 99 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 EA B3 61 19 AD C3 7F 14 00 00 00 00 00 00 00 00 00 00 00 00 8E E3 01",
         hexModified: "9B B0 01 99 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 10 BD 2B 9D 57 CD 35 90 00 00 00 00 00 00 00 00 00 00 00 00 B8 11 02"
     },
@@ -89,5 +89,14 @@ const playersData = [
         imgMiximax: "img/player/3931_SimeonAyp.png",
         hexOriginal: "94 F0 E1 87 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 24 7B CE FF 63 0B D0 F2 00 00 00 00 38 D7 C0 29 00 00 00 00 B2 F2 01",
         hexModified: "94 F0 E1 87 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 10 BD 2B 9D 57 CD 35 90 00 00 00 00 00 00 00 00 00 00 00 00 C8 53 02"
+    },
+    {
+        id: "victor",
+        name: "Victor Blade",
+        team: "Chrono Storm",
+        imgBase: "img/player/2433_VictorBlade.png",
+        imgMiximax: "img/player/3898_VictorBlade.png",
+        hexOriginal: "C0 D3 67 4A 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 74 B3 CB D5 33 C3 D5 D8 00 00 00 00 00 00 00 00 0A 00 00 00 3E 5A 01",
+        hexModified: "C0 D3 67 4A 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 10 BD 2B 9D 57 CD 35 90 00 00 00 00 00 00 00 00 00 00 00 00 EE 1A 02"
     }
 ];
