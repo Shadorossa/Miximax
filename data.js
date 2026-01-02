@@ -61,6 +61,33 @@ const playersData = [
         imgBase: "img/player/1076_Mercury.png",
         imgMiximax: "img/player/1076_Mercury.png",
         hexOriginal: "EF D7 4F 38 00 00 00 00 00 00 00 00 00 00 00 00 6A 29 68 DF EE 59 FD C5 A9 29 E3 C8 00 00 00 00 CA 8C 03 A8 00 00 00 00 3E A0 00",
-        hexModified: "EF D7 4F 38 00 00 00 00 00 00 00 00 00 00 00 00 6A 29 68 DF 10 BD 2B 9D 57 CD 35 90 00 00 00 00 00 00 00 00 00 00 00 00 F4 35 03"
+        hexModified: "EF D7 4F 38 00 00 00 00 00 00 00 00 00 00 00 00 6A 29 68 DF EE 59 FD C5 A9 29 E3 C8 00 00 00 00 CA 8C 03 A8 00 00 00 00 F4 35 03"
+    },
+    {
+        id: "romeo",
+        name: "Romeo",
+        team: "ProtocoloOmega3",
+        imgBase: "img/player/3514_Romeo.png",
+        imgMiximax: "img/player/3904_Romeo.png",
+        hexOriginal: "E7 C6 46 8B 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 9A 3C 81 D1 AD C3 7F 14 3F E2 3A 3A 00 00 00 00 00 00 00 00 F6 E2 01",
+        hexModified: "E7 C6 46 8B 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 10 BD 2B 9D 57 CD 35 90 00 00 00 00 00 00 00 00 00 00 00 00 62 10 02"
+    },
+    {
+        id: "gamma",
+        name: "Gamma",
+        team: "ProtocoloOmega3",
+        imgBase: "img/player/3913_Gamma.png",
+        imgMiximax: "img/player/3518_Gamma.png",
+        hexOriginal: "9B B0 01 99 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 EA B3 61 19 AD C3 7F 14 00 00 00 00 00 00 00 00 00 00 00 00 8E E3 01",
+        hexModified: "9B B0 01 99 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 10 BD 2B 9D 57 CD 35 90 00 00 00 00 00 00 00 00 00 00 00 00 B8 11 02"
+    },
+    {
+        id: "simeon",
+        name: "Simeon",
+        team: "Ragnah",
+        imgBase: "img/player/3645_SimeonAyp.png",
+        imgMiximax: "img/player/3931_SimeonAyp.png",
+        hexOriginal: "94 F0 E1 87 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 24 7B CE FF 63 0B D0 F2 00 00 00 00 38 D7 C0 29 00 00 00 00 B2 F2 01",
+        hexModified: "94 F0 E1 87 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 10 BD 2B 9D 57 CD 35 90 00 00 00 00 00 00 00 00 00 00 00 00 C8 53 02"
     }
 ];
