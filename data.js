@@ -69,7 +69,7 @@ const playersData = [
     {
         id: "romeo",
         name: "Romeo",
-        team: "ProtocoloOmega3",
+        team: "Protocolo Omega 3.0",
         imgBase: "img/player/3514_Romeo.png",
         imgMiximax: "img/player/3904_Romeo.png",
         hexOriginal: "E7 C6 46 8B 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 9A 3C 81 D1 AD C3 7F 14 3F E2 3A 3A 00 00 00 00 00 00 00 00 F6 E2 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 FF 6C 8D BA",
@@ -78,7 +78,7 @@ const playersData = [
     {
         id: "gamma",
         name: "Gamma",
-        team: "ProtocoloOmega3",
+        team: "Protocolo Omega 3.0",
         imgBase: "img/player/3518_Gamma.png",
         imgMiximax: "img/player/3913_Gamma.png",
         hexOriginal: "9B B0 01 99 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 EA B3 61 19 AD C3 7F 14 00 00 00 00 00 00 00 00 00 00 00 00 8E E3 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 FF CC E6 F7",
@@ -118,5 +118,50 @@ const playersData = [
         imgMiximax: "img/player/3902_ZanarkAvalonic.png",
         hexOriginal: "AD 44 65 29 00 00 00 00 00 00 00 00 00 00 00 00 7A FC C4 54 52 83 64 04 15 F3 7A 09 00 00 00 00 00 00 00 00 00 00 00 00 6A E7 01",
         hexModified: "AD 44 65 29 00 00 00 00 00 00 00 00 00 00 00 00 7A FC C4 54 10 BD 2B 9D 57 CD 35 90 00 00 00 00 00 00 00 00 00 00 00 00 16 10 02"
-    }
+    },
+    {
+        id: "zanarkZ",
+        name: "Zanark",
+        team: "Chrono Storm",
+        imgBase: "img/player/3568_ZanarkAvalonic.png",
+        imgMiximax: "img/player/3903_ZanarkAvalonic.png",
+        hexOriginal: "AD 44 65 29 00 00 00 00 00 00 00 00 00 00 00 00 7A FC C4 54 52 83 64 04 15 F3 7A 09 00 00 00 00 00 00 00 00 00 00 00 00 6A E7 01",
+        hexModified: "AD 44 65 29 00 00 00 00 00 00 00 00 00 00 00 00 7A FC C4 54 10 BD 2B 9D 57 CD 35 90 00 00 00 00 00 00 00 00 00 00 00 00 16 10 02"
+    },
+    {
+        id: "sierra",
+        name: "Sierra",
+        team: "Protocolo Omega 3.0",
+        imgBase: "img/player/3517_Sierra.png",
+        imgMiximax: "img/player/3911_Sierra.png",
+        hexOriginal: "AE 7D 84 5A 00 00 00 00 00 00 00 00 00 00 00 00 6A 29 68 DF EA B3 61 19 AD C3 7F 14 00 00 00 00 00 00 00 00 00 00 00 00 68 E3 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 FF CD E6 F7",
+        hexModified: "AE 7D 84 5A 00 00 00 00 00 00 00 00 00 00 00 00 6A 29 68 DF EA B3 61 19 AD C3 7F 14 00 00 00 00 00 00 00 00 00 00 00 00 6C 11 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 FF 54 74 C7"
+    },
+    {
+        id: "gabi",
+        name: "Gabi",
+        team: "Chrono Storm",
+        imgBase: "img/player/2436_GabrielGarcia.png",
+        imgMiximax: "img/player/3892_GabrielGarcia.png",
+        hexOriginal: "34 EA 88 60 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 74 B3 CB D5 33 C3 D5 D8 00 00 00 00 00 00 00 00 03 00 00 00 34 59 01",
+        hexModified: "34 EA 88 60 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 74 B3 CB D5 33 C3 D5 D8 00 00 00 00 00 00 00 00 03 00 00 00 9A 0E 02"
+    },
+    {
+        id: "veewai",
+        name: "Vee Wai",
+        team: "Cascada Perfecta",
+        imgBase: "img/player/3575_VeeWai.png",
+        imgMiximax: "img/player/3915_VeeWai.png",
+        hexOriginal: "BF E6 A6 38 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 87 DF D8 07 B0 20 26 C2 22 01 63 EC 00 00 00 00 00 00 00 00 74 E8 01",
+        hexModified: "BF E6 A6 38 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 87 DF D8 07 B0 20 26 C2 22 01 63 EC 00 00 00 00 00 00 00 00 04 12 02"
+    },
+    {
+        id: "bailong",
+        name: "Bai Long",
+        team: "Chrono Storm",
+        imgBase: "img/player/2700_Bailong.png",
+        imgMiximax: "img/player/3901_Bailong.png",
+        hexOriginal: "F2 D4 DB 5F 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 AD 3A EF 9F EA 4A F1 92 00 00 00 00 00 00 00 00 07 00 00 00 04 7E 01",
+        hexModified: "F2 D4 DB 5F 00 00 00 00 00 00 00 00 00 00 00 00 CB 5C 09 00 AD 3A EF 9F EA 4A F1 92 00 00 00 00 00 00 00 00 07 00 00 00 F0 0F 02"
+    },
 ];

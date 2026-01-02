@@ -134,20 +134,8 @@ header {
     overflow: hidden;
 }
 
-.card-img-top::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    width: 80%;
-    height: 2px;
-    background: var(--v-cyan);
-    filter: blur(3px);
-    opacity: 0.6;
-    z-index: 5;
-}
-
 .card-img-top img {
-    max-height: 140px;
+    max-height: 174px;
     width: auto;
     z-index: 2;
     transition: opacity 0.25s, transform 0.25s;
