@@ -1,4 +1,4 @@
-// Cargar jugadores al inicio
+// Cargar jugadores al inicio (se mantiene igual)
 document.addEventListener('DOMContentLoaded', () => {
     const grid = document.getElementById('playerGrid');
     playersData.forEach(player => {
@@ -7,13 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const isChecked = localStorage.getItem(player.id) === 'true' ? 'checked' : '';
 
         card.innerHTML = `
-            <img src="${player.img}" alt="${player.name}">
+            <img src="${player.img}" alt="${player.name}" onerror="this.src='img/player/default.png'">
             <h3>${player.name}</h3>
+            <p>${player.team}</p>
             <label class="switch">
                 <input type="checkbox" id="${player.id}" ${isChecked} onchange="savePreference('${player.id}')">
                 <span class="slider"></span>
             </label>
-            <p>Miximax Activo</p>
         `;
         grid.appendChild(card);
     });
@@ -24,7 +24,7 @@ function savePreference(id) {
     localStorage.setItem(id, checkbox.checked);
 }
 
-// Lógica de manipulación Hex
+// Lógica de manipulación Hex simplificada
 async function applyChanges() {
     const fileInput = document.getElementById('fileInput');
     if (fileInput.files.length === 0) return alert("Selecciona el archivo chara_param primero");
@@ -35,10 +35,16 @@ async function applyChanges() {
 
     playersData.forEach(player => {
         const active = document.getElementById(player.id).checked;
+
+        // Si el checkbox está marcado, buscamos el original y ponemos el modificado
+        // Si está desmarcado, buscamos el modificado y ponemos el original
         const searchHex = active ? player.hexOriginal : player.hexModified;
         const replaceHex = active ? player.hexModified : player.hexOriginal;
 
-        uint8Array = replaceByteSequence(uint8Array, searchHex, replaceHex);
+        // Solo intentamos reemplazar si el hex no es un placeholder
+        if (!searchHex.includes("HEX_")) {
+            uint8Array = replaceByteSequence(uint8Array, searchHex, replaceHex);
+        }
     });
 
     downloadFile(uint8Array, file.name);
@@ -48,7 +54,8 @@ function replaceByteSequence(data, searchHex, replaceHex) {
     const searchBytes = hexToBytes(searchHex);
     const replaceBytes = hexToBytes(replaceHex);
 
-    // Algoritmo simple de búsqueda y reemplazo
+    if (searchBytes.length !== replaceBytes.length) return data;
+
     for (let i = 0; i <= data.length - searchBytes.length; i++) {
         let match = true;
         for (let j = 0; j < searchBytes.length; j++) {
@@ -80,7 +87,7 @@ function downloadFile(data, fileName) {
     a.click();
 }
 
-// Guardar e Importar TXT
+// Funciones de Configuración (TXT)
 function saveConfig() {
     let config = {};
     playersData.forEach(p => config[p.id] = document.getElementById(p.id).checked);
@@ -91,13 +98,18 @@ function saveConfig() {
 function loadConfig(event) {
     const reader = new FileReader();
     reader.onload = function () {
-        const config = JSON.parse(reader.result);
-        for (const id in config) {
-            const el = document.getElementById(id);
-            if (el) {
-                el.checked = config[id];
-                savePreference(id);
+        try {
+            const config = JSON.parse(reader.result);
+            for (const id in config) {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.checked = config[id];
+                    savePreference(id);
+                }
             }
+            alert("Configuración cargada correctamente.");
+        } catch (e) {
+            alert("Error al cargar el archivo de configuración.");
         }
     };
     reader.readAsText(event.target.files[0]);
