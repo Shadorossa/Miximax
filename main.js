@@ -1,4 +1,4 @@
-const FILE_NAME = "chara_model_1.03.49.00.cfg.bin";
+const FILE_NAME = "chara_model_1.03.49.00.cfg";
 const currentViewIndex = {};
 let selectedTeam = null;
 
@@ -6,9 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTeamSelection();
 });
 
+// --- LÓGICA DE SELECCIÓN DE EQUIPO ---
 function renderTeamSelection() {
     const grid = document.getElementById('team-grid');
-    const teams = [...new Set(playersData.filter(p => !p.isSubOption).map(p => p.team))];
+    let teams = [...new Set(playersData.filter(p => !p.isSubOption).map(p => p.team))];
+    teams.sort((a, b) => a.localeCompare(b));
+
     grid.innerHTML = teams.map(teamName => {
         const teamId = teamName.replace(/\s/g, '');
         return `<div class="team-box" id="box-${teamId}" onclick="selectTeam('${teamName}')" title="${teamName}">
@@ -21,35 +24,33 @@ function selectTeam(teamName) {
     document.querySelectorAll('.team-box').forEach(b => b.classList.remove('selected'));
     const teamId = teamName.replace(/\s/g, '');
     if (document.getElementById(`box-${teamId}`)) document.getElementById(`box-${teamId}`).classList.add('selected');
+
     selectedTeam = teamName;
     document.getElementById('active-team-title').innerHTML = `EQUIPO: <span style="color: #fff">${teamName.toUpperCase()}</span>`;
     renderPlayerRow(teamName);
 }
 
+// --- RENDERIZADO DE JUGADORES ---
 function renderPlayerRow(teamName) {
     const row = document.getElementById('player-row');
     const filteredPlayers = playersData.filter(p => p.team === teamName && !p.isSubOption);
-    row.innerHTML = filteredPlayers.map(player => createPlayerCard(player)).join('');
-    filteredPlayers.forEach(p => updateVisuals(p.id, false, true));
-}
 
-function createPlayerCard(player) {
-    const isChecked = localStorage.getItem(player.id) === 'true';
-    if (!currentViewIndex[player.id]) currentViewIndex[player.id] = 0;
+    row.innerHTML = filteredPlayers.map((player, index) => {
+        const isChecked = localStorage.getItem(player.id) === 'true';
+        // Resetear índice al renderizar el equipo para evitar bugs de desbordamiento
+        currentViewIndex[player.id] = 0;
 
-    return `
-        <div class="player-card" id="card-${player.id}">
+        return `
+        <div class="player-card" id="card-${player.id}" style="animation-delay: ${index * 0.05}s">
             <div class="card-img-top" id="container-${player.id}">
                 <div class="img-nav" id="nav-${player.id}" style="display:none">
                     <button onclick="changeView('${player.id}', -1)">❮</button>
                     <button onclick="changeView('${player.id}', 1)">❯</button>
                 </div>
-                <img src="${player.imgBase}" id="img-display-${player.id}" class="img-visible">
+                <img src="${player.imgBase}" id="img-display-${player.id}">
             </div>
             <div class="card-info">
-                <div class="card-name-container">
-                    <h3 class="card-name">${player.name}</h3>
-                </div>
+                <div class="card-name-container"><h3 class="card-name">${player.name}</h3></div>
                 <div class="options-row">
                     <div class="control-unit">
                         <label class="switch">
@@ -68,80 +69,97 @@ function createPlayerCard(player) {
                     </div>` : ''}
                 </div>
             </div>
-        </div>
-    `;
+        </div>`;
+    }).join('');
+
+    filteredPlayers.forEach(p => updateVisuals(p.id, false, true));
 }
 
-function handleToggle(id) {
-    const card = document.getElementById(`card-${id}`);
-    if (card) {
-        card.classList.remove('energy-effect');
-        void card.offsetWidth;
-        card.classList.add('energy-effect');
+// --- GESTIÓN DE IMÁGENES (Sincronizada) ---
+
+// Función auxiliar para obtener qué imágenes deben mostrarse según los switches
+function getActiveImages(player) {
+    let images = [];
+    const checkMiximax = document.getElementById(player.id)?.checked;
+
+    if (player.id === "flora_base") {
+        const checkArmor = document.getElementById("flora_armadura")?.checked;
+        if (checkMiximax) images.push(player.imgMiximax);
+        if (checkArmor) images.push(player.imgArmadura);
+    } else {
+        if (checkMiximax) images.push(player.imgMiximax);
     }
-    updateVisuals(id, true, false);
+
+    // Si no hay nada seleccionado, devolvemos solo la base
+    return images.length > 0 ? images : [player.imgBase];
 }
 
 function updateVisuals(mainId, save, isInitial = false) {
     const player = playersData.find(p => p.id === mainId);
     const imgElement = document.getElementById(`img-display-${mainId}`);
     const nav = document.getElementById(`nav-${mainId}`);
-    const checkMiximax = document.getElementById(mainId).checked;
 
-    if (save) localStorage.setItem(mainId, checkMiximax);
-
-    let activeImages = [];
-    if (mainId === "flora_base") {
-        const checkArmor = document.getElementById("flora_armadura").checked;
-        if (save) localStorage.setItem("flora_armadura", checkArmor);
-        if (checkMiximax) activeImages.push(player.imgMiximax);
-        if (checkArmor) activeImages.push(player.imgArmadura);
-    } else {
-        if (checkMiximax) activeImages.push(player.imgMiximax);
+    if (save) {
+        const checkMiximax = document.getElementById(mainId).checked;
+        localStorage.setItem(mainId, checkMiximax);
+        if (mainId === "flora_base") {
+            localStorage.setItem("flora_armadura", document.getElementById("flora_armadura").checked);
+        }
     }
 
-    if (activeImages.length === 0) activeImages = [player.imgBase];
+    const activeImages = getActiveImages(player);
+
+    // Si cambiamos los switches, reseteamos al primer estado disponible para evitar bugs
+    if (!isInitial && !save) currentViewIndex[mainId] = 0;
+    if (save) currentViewIndex[mainId] = 0;
+
     if (nav) nav.style.display = activeImages.length > 1 ? "flex" : "none";
 
     const targetSrc = activeImages[currentViewIndex[mainId] || 0];
 
     if (isInitial) {
         imgElement.src = targetSrc;
+        setTimeout(() => imgElement.classList.add('img-visible'), 100);
     } else {
+        imgElement.classList.remove('img-visible');
         imgElement.classList.add('img-hidden');
         setTimeout(() => {
-            if (currentViewIndex[mainId] >= activeImages.length) currentViewIndex[mainId] = 0;
             imgElement.src = targetSrc;
             imgElement.classList.remove('img-hidden');
             imgElement.classList.add('img-visible');
-        }, 200);
+        }, 250);
     }
 }
 
 function changeView(id, dir) {
     const player = playersData.find(p => p.id === id);
-    let activeImages = [];
-    if (document.getElementById(id).checked) activeImages.push(player.imgMiximax);
-    if (id === "flora_base" && document.getElementById("flora_armadura").checked) activeImages.push(player.imgArmadura);
-    if (activeImages.length === 0) activeImages = [player.imgBase];
-
+    const activeImages = getActiveImages(player);
     const imgElement = document.getElementById(`img-display-${id}`);
+
+    imgElement.classList.remove('img-visible');
     imgElement.classList.add('img-hidden');
+
     setTimeout(() => {
+        // Cálculo circular del índice
         currentViewIndex[id] = (currentViewIndex[id] + dir + activeImages.length) % activeImages.length;
         imgElement.src = activeImages[currentViewIndex[id]];
         imgElement.classList.remove('img-hidden');
         imgElement.classList.add('img-visible');
-    }, 200);
+    }, 250);
 }
 
-// LÓGICA HEXADECIMAL
+function handleToggle(id) {
+    updateVisuals(id, true, false);
+}
+
+// --- MOTOR DE PROCESAMIENTO BINARIO ---
 async function processAndDownload() {
     try {
         const res = await fetch(FILE_NAME);
-        if (!res.ok) throw new Error("Base .bin no encontrada.");
+        if (!res.ok) throw new Error(`No se pudo encontrar el archivo ${FILE_NAME} en la raíz.`);
         const buffer = await res.arrayBuffer();
         let data = new Uint8Array(buffer);
+
         playersData.forEach(p => {
             const el = document.getElementById(p.id) || { checked: localStorage.getItem(p.id) === 'true' };
             const active = el.checked;
@@ -149,9 +167,11 @@ async function processAndDownload() {
             const rH = active ? p.hexModified : p.hexOriginal;
             if (sH && rH && !sH.includes("HEX_")) data = replaceByteSequence(data, sH, rH);
         });
+
         const blob = new Blob([data], { type: "application/octet-stream" });
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href = url; a.download = FILE_NAME; a.click();
+        const a = document.createElement('a');
+        a.href = url; a.download = FILE_NAME; a.click();
     } catch (e) { alert(e.message); }
 }
 
@@ -186,7 +206,7 @@ function loadConfig(event) {
         const config = JSON.parse(e.target.result);
         for (const id in config) { localStorage.setItem(id, config[id]); }
         if (selectedTeam) renderPlayerRow(selectedTeam);
-        alert("Configuración cargada.");
+        alert("Configuración cargada correctamente.");
     };
     reader.readAsText(event.target.files[0]);
 }

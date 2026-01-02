@@ -160,37 +160,61 @@ header {
     background: radial-gradient(circle at bottom, #151a30 0%, transparent 70%);
 }
 
-/* Pedestal anclado (No flotan) */
+/* --- IMAGEN Y TRANSICIÓN (EFECTO DE INMERSIÓN) --- */
+.card-img-top {
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    position: relative;
+    background: radial-gradient(circle at bottom, #151a30 0%, transparent 70%);
+
+    /* CLAVE: Corta la imagen cuando baja más allá del borde */
+    overflow: hidden;
+}
+
+/* PEDESTAL (Ahora con z-index superior) */
 .card-img-top::after {
     content: "";
     position: absolute;
     bottom: 0;
     width: 80%;
-    height: 3px;
+    height: 4px;
+    /* Un poco más grueso para que tape mejor los pies */
     background: var(--v-cyan);
-    filter: blur(4px);
-    opacity: 0.6;
+    border-radius: 50%;
+    filter: blur(3px);
+    opacity: 0.8;
+    /* Más opaco para ocultar la imagen detrás */
     box-shadow: 0 0 10px var(--v-cyan);
+
+    /* CLAVE: El pedestal se coloca por encima del personaje */
+    z-index: 5;
 }
 
 .card-img-top img {
     max-height: 130px;
     width: auto;
+
+    /* CLAVE: El personaje está en una capa inferior al pedestal */
     z-index: 2;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    /* FADE SMOOTH */
+
+    transition: opacity 0.20s ease-in, transform 0.20s ease-in;
     opacity: 0;
-    /* Por defecto para el efecto inicial */
+    transform: translateY(20px);
+    /* Empieza más abajo para que "emerja" */
 }
 
+/* ESTADO VISIBLE: Sube a su posición original */
 .img-visible {
     opacity: 1 !important;
-    transform: scale(1);
+    transform: translateY(0) !important;
 }
 
+/* ESTADO OCULTO: Se hunde bajo el pedestal y desaparece */
 .img-hidden {
     opacity: 0 !important;
-    transform: scale(0.9);
+    transform: translateY(20px) !important;
 }
 
 /* --- CONTROLES --- */
